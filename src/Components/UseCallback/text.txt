@@ -1,0 +1,107 @@
+🧠 ¿Qué es useCallback?
+Es un hook de React que te permite memorizar funciones para que no se vuelvan a crear en cada render, a menos que cambien sus dependencias.
+
+    const memoizedCallback = useCallback(() => {
+    // tu función
+    }, [dependencias]);
+
+    - ⚠️ No se ejecuta como useEffect. Solo memoriza la función.
+    - ✅ Mantiene la misma referencia en cada render.
+
+📦 ¿Para qué sirve realmente?
+🔁 En cada render, React recrea todas las funciones definidas dentro del componente.
+
+Eso puede causar:
+
+    - ⚠️ Re-render innecesario de componentes hijos
+    - ❌ Ineficiencia en listas, tablas o efectos
+
+useCallback evita eso, manteniendo la misma referencia de función entre renders, a menos que sus dependencias cambien.
+
+🧠 ¿Qué hace useCallback internamente?
+
+    - Memoriza una función
+    - Solo la vuelve a generar si cambian las dependencias
+    - Ayuda a evitar renders innecesarios cuando se pasan funciones como props
+
+✅ ¿Cuándo se debe usar useCallback?
+                                  
+Casos reales -> 🔁 Pasas funciones a componentes hijos memoizados (React.memo)	
+        Explicación -> Evitas que el hijo se re-renderice
+Casos reales -> 🧮 En listas, grids, renders complejos	
+        Explicación -> Para optimizar el rendimiento
+Casos reales -> 🧠 Al usar dependencias dentro de useEffect, useMemo, etc.	
+        Explicación ->Para evitar loops o renders infinitos
+
+🚨 ¡Pero cuidado!
+    - Si tu componente no se renderiza muchas veces → No necesitas useCallback.
+    - Solo úsalo cuando pase funciones como props o haya rendimiento crítico.
+
+📘 Ejemplo 1: Sin useCallback (mal rendimiento)
+const Parent = () => {
+  const [count, setCount] = useState(0);
+
+  const handleClick = () => {
+    console.log("clicked");
+  };
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>Sumar</button>
+      <Child onClick={handleClick} />
+    </>
+  );
+};
+
+const Child = React.memo(({ onClick }: { onClick: () => void }) => {
+  console.log("Child render");
+  return <button onClick={onClick}>Click</button>;
+});
+🔴 Aunque Child está memoizado, se renderiza siempre porque handleClick 
+cambia en cada render (nueva función).
+
+✅ Ejemplo 2: Con useCallback (solucionado)
+
+const handleClick = useCallback(() => {
+  console.log("clicked");
+}, []); // no depende de nada
+
+// Ahora no se recrea en cada render
+
+    - ✅ Child no se re-renderiza innecesariamente. 
+    - ✅ Función con referencia estable.
+
+📘 Ejemplo 3: Dependencias dinámicas
+
+const [name, setName] = useState("Omar");
+
+const greet = useCallback(() => {
+  console.log(`Hola ${name}`);
+}, [name]); // Solo cambia si `name` cambia
+
+
+⚙️ Ejemplo real profesional: Lista de tareas
+
+const TodoItem = React.memo(({ onToggle }: { onToggle: () => void }) => {
+  console.log("TodoItem render");
+  return <input type="checkbox" onChange={onToggle} />;
+});
+
+const TodoList = () => {
+  const [completed, setCompleted] = useState(false);
+
+  const toggle = useCallback(() => {
+    setCompleted((prev) => !prev);
+  }, []);
+
+  return <TodoItem onToggle={toggle} />;
+};
+
+    ✅ useCallback evita que la función toggle cambie en cada render 
+        y mantiene la eficiencia del componente memoizado.
+
+
+
+🧠 ¿Cuál es la diferencia entre useCallback y useMemo?
+useCallback -> Memoriza funciones
+useMemo -> Memoriza valores devueltos por funciones

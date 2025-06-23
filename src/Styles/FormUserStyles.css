@@ -1,0 +1,55 @@
+.is-invalid{
+    border-color: red;
+}
+.error{
+    color: red;
+    max-width: 200px;
+    margin-top: 0.25rem;
+}
+
+
+.form-sombra {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    
+}
+
+.form-sombra .form-group {
+    margin-bottom: 1.5rem;
+    width: 350px;
+}
+
+.form-sombra input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.form-sombra input:focus {
+    border-color: #6c5ce7;
+    outline: none;
+}
+
+.form-sombra button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.form-sombra button:hover {
+    background-color: #5649c0;
+    transform: translateY(-2px);
+}
