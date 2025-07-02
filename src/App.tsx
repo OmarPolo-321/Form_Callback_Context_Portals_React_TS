@@ -7,6 +7,7 @@ import type { ReactNode } from 'react'
 import { Modal } from './Components'
 import { useModalContext } from './Components/Modal/useContext/ModalContext'
 import './Styles/FormUserStyles.css' 
+import { NavLink } from 'react-router-dom'
 // import { useGlobalContext } from './UseContext/global.context'
 
 interface Props{
@@ -25,7 +26,13 @@ function App({children}:Props) {
       {/* FormUser /> */}
       {/* FormUser_ConHookAparte /> */}
       {/* CustomForm /> */}
-      <p>Aqui va el header</p>
+      <nav>
+        <ul>
+          <li><NavLink to="/">Login</NavLink> </li>
+          <li><NavLink to="/formulario">Formulario</NavLink> </li>
+          <li><NavLink to="/private/dashboard">Dashboard</NavLink> </li>
+        </ul>
+      </nav>
       {children}
       <p>aqui va a ir el Footer</p>
       <Modal>
